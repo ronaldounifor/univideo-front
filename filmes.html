@@ -1,0 +1,58 @@
+<html>
+    <head><title>FILMES</title></head>
+    <body>
+        <div>
+            <ul id="listaFilmes"></ul>
+        </div>
+        <script>
+            // fetch('https://natanbarber-production.up.railway.app/clientes', { mode: 'no-cors' })
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         const listaClientes = document.getElementById('listaClientes');
+            //         listaClientes.innerHTML = '';
+            //         data.forEach(cliente => {
+            //             const li = document.createElement('li');
+            //             li.textContent = cliente.nome;
+            //             listaClientes.appendChild(li);
+            //         });
+            //     })
+            //     .catch(error => console.error('Erro ao obter a lista de clientes:', error));
+
+            async function fetchFilmes() {
+                try {
+                    const response = await fetch('https://univideo-production.up.railway.app/filmes', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Erro ao buscar filmes');
+                    }
+
+                    const data = await response.json();
+                    return data;
+                } catch (error) {
+                    console.error('Ocorreu um erro:', error.message);
+                    return null;
+                }
+            }
+
+            fetchFilmes().then(data => {
+                if (data) {
+                    const listaFilmes = document.getElementById('listaFilmes');
+                    listaFilmes.innerHTML = '';
+                    data.forEach(filme => {
+                        const li = document.createElement('li');
+                        li.textContent = filme.nome;
+                        listaFilmes.appendChild(li);
+                    });
+                } else {
+                    console.log('Não foi possível obter a lista de clientes');
+                }
+            }).catch(error => console.error('Erro:', error));
+        </script>
+
+    </body>
+</html>
